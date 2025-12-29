@@ -1,0 +1,40 @@
+---
+- hosts: ostdrpsgp02
+  become: false
+  gather_facts: false
+  vars:
+   operation: start
+   applications:
+    app_1:
+     app: psg
+     pid: nds_slg
+#    app_2:
+#     app: dsrvpsg
+#     pid: nds_dsrv_psg
+
+
+  tasks:
+  - name: XXXXXXXXXX [ first host checking ] XXXXXXXXXX
+#    shell: "sudo su - psg <<< \"/apps/psg/release-psg/utils/nds_psg status\""
+    shell: "hostname"
+    register: ps1
+  - debug:
+     msg : "{{ ps1.stdout_lines }}"
+
+
+  - name: XXXXXXXXXX [ 2nd host checking] XXXXXXXXXX
+    shell: "sudo su - psg <<< \"/apps/psg/release-psg/utils/nds_psg status\""
+    ignore_errors: true
+#    shell: "sudo su - {{ item.value.app }} <<< \"/apps/{{ item.value.app }}/release-{{ item.value.app }}/utils/{{ item.value.pid }} status || /bin/true\""
+#    with_dict: "{{ applications }}"
+    register: ps2
+  - debug:
+     msg: "{{ ps2.stdout }}"
+    
+  - name: XXXXXXXXXX [ 2nd host checking] XXXXXXXXXX
+#    shell: "sudo su - psg <<< \"/apps/psg/release-psg/utils/nds_psg status\""
+    shell: "hostname"
+#    with_dict: "{{ applications }}"
+    register: ps3
+  - debug:
+     msg: "{{ ps3.stdout_lines }}"
