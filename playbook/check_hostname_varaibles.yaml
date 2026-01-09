@@ -1,7 +1,6 @@
 ---
 - name: Simple per-host variable example
   hosts: all
-  gather_facts: false
 
   tasks:
     - name: Echo hostname and power variables
