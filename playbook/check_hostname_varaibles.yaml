@@ -15,15 +15,16 @@
 
     - name: Print hostname
       ansible.builtin.debug:
-        msg: "Hostname: {{ ansible_hostname | default(inventory_hostname) }}"
+        msg: "Hostname: {{ ansible_hostname }}"
       when:       
         - v_method is defined
         - v_method == 'name'
 
 
     # Optional: show what was executed (for clarity)
-    - name: Summary per host
+    - name: Summary (only for hosts with v_method)
       ansible.builtin.debug:
         msg: >-
-          {{ inventory_hostname }} ran method={{ v_method | default('name') }}
-          {{ 'disk -> ' ~ (disk_out.stdout | default('')) if (v_method | default('name')) == 'disk' else 'name -> ' ~ (ansible_hostname | default(inventory_hostname)) }}
+          {{ ansible_hostname }} ran method={{ v_method }}
+      when: v_method is defined
+
