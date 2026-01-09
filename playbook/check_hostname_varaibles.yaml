@@ -1,0 +1,10 @@
+---
+- name: Simple per-host variable example
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Echo hostname and power variables
+      ansible.builtin.debug:
+        msg: "the hostname is {{ ansible_hostname }} and genric name of {{ v_hostname }} and has power of {{ v_power }}"
+
