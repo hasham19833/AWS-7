@@ -1,9 +1,23 @@
 ---
-- name: Simple per-host variable example
+- name: Run one task per host based on v_method
   hosts: all
+  gather_facts: true  # to get ansible_hostname; you can set false and use `hostname` command instead
 
   tasks:
-    - name: Echo hostname and power variables
-      ansible.builtin.debug:
-        msg: "the hostname is {{ ansible_hostname }} and genric name of {{ v_hostname }} and has power of {{ v_power }}"
+    - name: Show free disk space
+      ansible.builtin.command: "df -h"
+      register: disk_out
+      changed_when: false
+      when: v_method | default('name') == 'disk'
 
+    - name: Print hostname
+      ansible.builtin.debug:
+        msg: "Hostname: {{ ansible_hostname | default(inventory_hostname) }}"
+      when: v_method | default('name') == 'name'
+
+    # Optional: show what was executed (for clarity)
+    - name: Summary per host
+      ansible.builtin.debug:
+        msg: >-
+          {{ inventory_hostname }} ran method={{ v_method | default('name') }}
+          {{ 'disk -> ' ~ (disk_out.stdout | default('')) if (v_method | default('name')) == 'disk' else 'name -> ' ~ (ansible_hostname | default(inventory_hostname)) }}
