@@ -5,8 +5,8 @@
   gather_facts: true  # to get ansible_hostname; you can set false and use `hostname` command instead
 
   tasks:
-    - name: Show free disk space
-      ansible.builtin.command: "/usr/bin/cat /etc/redhat_release"
+    - name: ***** Show free disk space {{ ansible_hostname }} *****
+      ansible.builtin.command: "/usr/bin/cat /etc/redhat-release"
       register: disk_out
       changed_when: false
       ignore_errors: true
@@ -15,17 +15,16 @@
         - v_method == 'disk'
 
 
-    - name: Print disk result (only if disk task ran)
+    - name: *****  RESULTS for disk {{ ansible_hostname }} *****
       ansible.builtin.debug:
         msg: |
-          {{ inventory_hostname }} (v_method=disk)
-          --- df -h output ---
-          {{ disk_out }}
+          {{ inventory_hostname }} ---> {{ disk_out.stdout }}
       when:
         - v_method is defined
         - v_method == 'disk'
 
-    - name: Print hostname
+
+    - name: ***** Show host name {{ ansible_hostname }} *****
       ansible.builtin.command: "hostname"
       register: hostname_out
       changed_when: false
@@ -35,7 +34,7 @@
         - v_method == 'name'
 
 
-    - name: Print hostname
+    - name: *****  RESULTS for hostname {{ ansible_hostname }} *****
       ansible.builtin.debug:
         msg: "{{ inventory_hostname }} (v_method=name) -> Hostname: {{ hostname_out.stdout }}"
       when:
