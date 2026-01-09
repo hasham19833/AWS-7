@@ -8,12 +8,12 @@
       ansible.builtin.command: "df -h"
       register: disk_out
       changed_when: false
-      when: v_method | default('name') == 'disk'
+      when: v_method == 'disk'
 
     - name: Print hostname
       ansible.builtin.debug:
         msg: "Hostname: {{ ansible_hostname | default(inventory_hostname) }}"
-      when: v_method | default('name') == 'name'
+      when: v_method == 'name'
 
     # Optional: show what was executed (for clarity)
     - name: Summary per host
