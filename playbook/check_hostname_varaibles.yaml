@@ -6,7 +6,7 @@
 
   tasks:
     - name: Show free disk space
-      ansible.builtin.command: "df -h"
+      ansible.builtin.command: "cat /etc/redhat_release"
       register: disk_out
       changed_when: false
       when:     
@@ -35,7 +35,7 @@
 
     - name: Print hostname
       ansible.builtin.debug:
-        msg: "{{ inventory_hostname }} (v_method=name) -> Hostname: {{ hostname_out }}"
+        msg: "{{ inventory_hostname }} (v_method=name) -> Hostname: {{ hostname_out.stdout }}"
       when:
         - v_method is defined
         - v_method == 'name'
