@@ -1,6 +1,7 @@
 ---
 - name: Run one task per host based on v_method
   hosts: all
+  serial: 1
   gather_facts: true  # to get ansible_hostname; you can set false and use `hostname` command instead
 
   tasks:
