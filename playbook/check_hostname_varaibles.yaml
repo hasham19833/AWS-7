@@ -6,7 +6,7 @@
   tasks:
     - name: Show free disk space
       ansible.builtin.command: "df -h"
-      register: results
+      register: disk_out
       changed_when: false
       when:     
         - v_method is defined
@@ -25,16 +25,16 @@
 
     - name: Print hostname
       ansible.builtin.command: "hostname"
-      register: results
+      register: hostname_out
       changed_when: false
       when:       
         - v_method is defined
         - v_method == 'name'
 
 
-    - name: Print hostname (from facts)
+    - name: Print hostname
       ansible.builtin.debug:
-        msg: "{{ inventory_hostname }} (v_method=name) -> Hostname: {{ ansible_hostname }}"
+        msg: "{{ inventory_hostname }} (v_method=name) -> Hostname: {{ hostname_out }}"
       when:
         - v_method is defined
         - v_method == 'name'
