@@ -6,9 +6,10 @@
 
   tasks:
     - name: Show free disk space
-      ansible.builtin.command: "cat /etc/redhat_release"
+      ansible.builtin.command: "/usr/bin/cat /etc/redhat_release"
       register: disk_out
       changed_when: false
+      ignore_errors: true
       when:     
         - v_method is defined
         - v_method == 'disk'
@@ -28,6 +29,7 @@
       ansible.builtin.command: "hostname"
       register: hostname_out
       changed_when: false
+      ignore_errors: true
       when:       
         - v_method is defined
         - v_method == 'name'
