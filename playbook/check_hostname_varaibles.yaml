@@ -24,7 +24,7 @@
         - v_method == 'disk'
 
 
-    - name: ***** Show host name {{ ansible_hostname }} *****
+    - name: \*\*\*\*\* Show host name {{ ansible_hostname }} \*\*\*\*\*
       ansible.builtin.command: "hostname"
       register: hostname_out
       changed_when: false
@@ -34,7 +34,7 @@
         - v_method == 'name'
 
 
-    - name: *****  RESULTS for hostname {{ ansible_hostname }} *****
+    - name: \*\*\*\*\*  RESULTS for hostname {{ ansible_hostname }} \*\*\*\*\*
       ansible.builtin.debug:
         msg: "{{ inventory_hostname }} (v_method=name) -> Hostname: {{ hostname_out.stdout }}"
       when:
