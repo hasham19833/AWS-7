@@ -24,6 +24,7 @@
       when:
         - v_method is defined
         - v_method == 'HA_hagrp'
+    - name: RESULTS [ {{ v_SG  }} ]   
       ansible.builtin.debug:
         msg: |
           {{ t1_output.stdout_lines }}
