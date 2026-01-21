@@ -1,0 +1,34 @@
+---
+- name: Run one task per host based on v_method
+  hosts: all
+  serial: 1
+  gather_facts: true
+
+  tasks:
+    - name: ACTION [ {{ v_operation }} ].... WITH [ {{ v_pid }} ] .... ON [ {{ v_hostname }} ]
+      shell: "sudo su - {{ v_user }} <<< \"{{ v_path }}/{{ v_pid }} {{ v_operation }} || /bin/true\""
+      register: t1_output
+      changed_when: false
+      ignore_errors: true
+      when:
+        - v_method is defined
+        - v_method == 'HA_utils'
+
+
+    - name: STATUS OF [ {{ v_pid  }} ]
+      shell: "sudo su - {{ v_user }} <<< \"{{ v_path }}/{{ v_pid }} status || /bin/true\""
+      register: t1_output
+      changed_when: false
+      ignore_errors: true
+      when:
+        - v_method is defined
+        - v_method == 'HA_utils'
+
+
+    - name: RESULTS [ {{ v_pid  }} ]
+      ansible.builtin.debug:
+        msg: |
+          {{ t1_output.stdout }}
+      when:
+        - v_method is defined
+        - v_method == 'HA_utils'
