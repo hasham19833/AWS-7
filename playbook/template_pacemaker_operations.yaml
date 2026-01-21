@@ -1,0 +1,37 @@
+---
+- name: Run one task per host based on v_method
+  hosts: all
+  serial: 1
+  gather_facts: true
+
+  tasks:
+    - name: ACTION [ {{ v_operation }} ].... WITH [ {{ v_pid }} ] .... ON [ {{ v_hostname }} ]
+      shell: "sudo pcs resource {{ v_operation}} {{ v_pid}} || /bin/true"
+      register: t1_output
+      changed_when: false
+      ignore_errors: true
+      when:
+        - v_method is defined
+        - v_method == 'HA_pacemaker'
+        - v_operation != 'status'
+
+
+    - name: STATUS OF [ {{ v_pid  }} ]
+      shell: "sudo pcs status resources || /bin/true"
+      register: t1_output
+      changed_when: false
+      ignore_errors: true
+      when:
+        - v_method is defined
+        - v_method == 'HA_pacemaker'
+
+
+    - name: RESULTS [ {{ v_pid  }} ]
+      ansible.builtin.debug:
+        msg: |-
+          {{ t1_output.stdout_lines | replace('\t', '         ') }}
+
+
+      when:
+        - v_method is defined
+        - v_method == 'HA_pacemaker'
