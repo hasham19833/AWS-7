@@ -13,7 +13,7 @@
       when:
         - v_method is defined
         - v_method == 'HA_hagrp'
-        - v_operation != status
+        - v_operation != state
 
 
     - name: STATUS OF [ {{ v_SG  }} ]
